@@ -9,7 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PAGES_DIR = path.join(__dirname, "pages");
 const IBLOCKS_DIR = path.join(__dirname, "iblocks");
 const OUTPUT_DIR = path.join(__dirname, "compiled");
-const PORT = 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
