@@ -1,8 +1,9 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Box, useApp } from "ink";
 import { StatusBar } from "./StatusBar.js";
 import { Terminal } from "./Terminal.js";
 import { dispatch, listCommands } from "../commands/registry.js";
+import { runProjectInit } from "../commands/project.js";
 import { state } from "../core/state.js";
 
 export function App() {
@@ -25,6 +26,16 @@ export function App() {
       resolveRef.current = resolve;
       setPromptQuestion(question);
     });
+  }, []);
+
+  useEffect(() => {
+    if (!state.projectId) {
+      log("No project configured. Starting setup…");
+      runProjectInit({ log, prompt }).catch((err: any) =>
+        log(`Error: ${err?.message ?? String(err)}`)
+      );
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = useCallback(
