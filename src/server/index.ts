@@ -202,25 +202,26 @@ export function startServer(port: number, dir: string, log: (msg: string) => voi
   });
 
   watcher.on("change", (filePath: string) => {
-    const rel = relative(cwd, filePath);
-    if (rel.startsWith("iblocks" + sep)) {
-      // Iblock changed: invalidate iblock map + full page cache
+    const rel = relative(cwd, filePath).replace(/\\/g, "/");
+    if (rel.startsWith("iblocks/")) {
       iblockFileMap.clear();
       pageCache.clear();
+      logFn?.(`↻ iblock changed: ${filePath.split(sep).pop()} — reloading all`);
     } else {
-      // Page changed: invalidate just that page's cache entry
       for (const [key, fp] of pageFileMap.entries()) {
         if (fp === filePath) pageCache.delete(key);
       }
+      logFn?.(`↻ page changed: ${rel} — reloading`);
     }
     notifySSEClients();
   });
 
-  watcher.on("add", () => {
-    // New file: rebuild all maps on next request
+  watcher.on("add", (filePath: string) => {
     pageFileMap.clear();
     iblockFileMap.clear();
     pageCache.clear();
+    const rel = relative(cwd, filePath).replace(/\\/g, "/");
+    logFn?.(`+ new file: ${rel} — reloading`);
     notifySSEClients();
   });
 }
