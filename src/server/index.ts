@@ -5,6 +5,8 @@ import { join, relative, sep, extname } from "path";
 // --- Module-level state ---
 let bunServer: ReturnType<typeof Bun.serve> | null = null;
 let watcher: FSWatcher | null = null;
+let heartbeat: ReturnType<typeof setInterval> | null = null;
+let logFn: ((msg: string) => void) | null = null;
 let cwd = process.cwd();
 
 const pageFileMap = new Map<string, string>();   // url-key → file path
@@ -116,14 +118,31 @@ function notifySSEClients(): void {
 
 // --- Public API ---
 
-export function startServer(port: number, dir: string): void {
+export function startServer(port: number, dir: string, log: (msg: string) => void): void {
   if (bunServer) return;
   cwd = dir;
+  logFn = log;
   buildPageFileMap();
   buildIblockFileMap();
 
+  // Heartbeat keeps SSE connections alive and resets Bun's idle timer
+  heartbeat = setInterval(() => {
+    for (const ctrl of sseClients) {
+      try {
+        ctrl.enqueue(enc.encode(": ping\n\n"));
+      } catch {
+        sseClients.delete(ctrl);
+      }
+    }
+  }, 25_000);
+
   bunServer = Bun.serve({
     port,
+    idleTimeout: 255, // max; SSE connections are long-lived
+    error(err) {
+      logFn?.(`[server] ${err.message}`);
+      return new Response("Internal server error", { status: 500 });
+    },
     fetch(req) {
       const url = new URL(req.url);
       const pathname = decodeURIComponent(url.pathname);
@@ -207,10 +226,12 @@ export function startServer(port: number, dir: string): void {
 }
 
 export function stopServer(): void {
+  if (heartbeat) { clearInterval(heartbeat); heartbeat = null; }
   watcher?.close();
   bunServer?.stop(true);
   watcher = null;
   bunServer = null;
+  logFn = null;
   sseClients.clear();
   pageCache.clear();
 }

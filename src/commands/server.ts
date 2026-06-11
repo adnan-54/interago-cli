@@ -11,7 +11,7 @@ registerCommand({
       return;
     }
     const port = parseInt(args[0] ?? "3000", 10);
-    startServer(port, process.cwd());
+    startServer(port, process.cwd(), ctx.log);
     state.serverPort = port;
     notifyStateChange();
     ctx.log(`✓ Server started → http://localhost:${port}`);
