@@ -1,9 +1,6 @@
 import { registerCommand } from "./registry.js";
 import { saveConfig } from "../core/config.js";
 import { state, notifyStateChange } from "../core/state.js";
-import { apiCall } from "../core/api.js";
-import { mkdirSync, writeFileSync } from "fs";
-import { join, dirname } from "path";
 
 registerCommand({
   name: "project select",
@@ -17,93 +14,5 @@ registerCommand({
     state.apiToken = apiToken;
     notifyStateChange();
     ctx.log(`✓ Project set: ${projectId}`);
-  },
-});
-
-registerCommand({
-  name: "project pull",
-  description: "Download all pages and blocks from current project",
-  async handler(_args, ctx) {
-    if (!state.projectId || !state.apiToken) {
-      ctx.log("No project set. Run: project select [id] [token]");
-      return;
-    }
-    const api = { projectId: state.projectId, apiToken: state.apiToken };
-    const cwd = process.cwd();
-    mkdirSync(join(cwd, "pages"), { recursive: true });
-    mkdirSync(join(cwd, "blocks"), { recursive: true });
-
-    // Pages — two-pass: collect all, then detect prefix conflicts, then write
-    ctx.log("Fetching pages…");
-    let page = 1;
-    const collected: Array<{ slug: string; pageId: string; code: string }> = [];
-    while (true) {
-      const res = await apiCall(api, {
-        module: "pages",
-        method: "listPages",
-        page: String(page),
-        pageSize: "50",
-      });
-      for (const p of (res.pages ?? []) as any[]) {
-        const draft = await apiCall(api, {
-          module: "pages",
-          method: "getPageDraft",
-          pageId: String(p.pageId),
-        });
-        const code: string = draft.draft?.draftCode ?? draft.draftCode ?? "";
-        const slug = (p.pageUrl as string | undefined)?.replace(/^\//, "").trim() || "index";
-        collected.push({ slug, pageId: String(p.pageId), code });
-      }
-      if (!res.hasMore) break;
-      page++;
-    }
-
-    // Promote any slug that is a prefix of another slug to slug/index
-    const slugSet = new Set(collected.map((p) => p.slug));
-    for (const p of collected) {
-      if ([...slugSet].some((s) => s.startsWith(p.slug + "/"))) {
-        p.slug = p.slug + "/index";
-      }
-    }
-
-    let totalPages = 0;
-    for (const p of collected) {
-      const filename = `${p.slug} - ${p.pageId}.html`;
-      const filePath = join(cwd, "pages", filename);
-      mkdirSync(dirname(filePath), { recursive: true });
-      writeFileSync(filePath, p.code, "utf8");
-      totalPages++;
-      ctx.log(`  ✓ page: ${filename}`);
-    }
-
-    // iBlocks
-    ctx.log("Fetching blocks…");
-    let blockPage = 1;
-    let totalBlocks = 0;
-    while (true) {
-      const res = await apiCall(api, {
-        module: "pages",
-        method: "listBlocks",
-        page: String(blockPage),
-        pageSize: "50",
-      });
-      for (const b of (res.blocks ?? []) as any[]) {
-        const detail = await apiCall(api, {
-          module: "pages",
-          method: "getBlock",
-          blockinwebsiteId: String(b.blockinwebsiteId),
-          includeContent: "1",
-        });
-        const content: string = detail.block?.content ?? "";
-        const filename = `${b.blockName} - ${b.blockinwebsiteId}.html`;
-        writeFileSync(join(cwd, "blocks", filename), content, "utf8");
-        totalBlocks++;
-        ctx.log(`  ✓ block: ${filename}`);
-      }
-      if (!res.hasMore) break;
-      blockPage++;
-    }
-
-    ctx.log(`✓ Done — ${totalPages} pages, ${totalBlocks} blocks.`);
   },
 });

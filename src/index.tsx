@@ -6,6 +6,8 @@ import { loadConfig } from "./core/config.js";
 
 // Register all commands (side-effect imports)
 import "./commands/project.js";
+import "./commands/pull.js";
+import "./commands/push.js";
 import "./commands/server.js";
 
 // Restore saved project config
