@@ -22,7 +22,7 @@ registerCommand({
 
 registerCommand({
   name: "project pull",
-  description: "Download all pages and iblocks from current project",
+  description: "Download all pages and blocks from current project",
   async handler(_args, ctx) {
     if (!state.projectId || !state.apiToken) {
       ctx.log("No project set. Run: project select [id] [token]");
@@ -31,7 +31,7 @@ registerCommand({
     const api = { projectId: state.projectId, apiToken: state.apiToken };
     const cwd = process.cwd();
     mkdirSync(join(cwd, "pages"), { recursive: true });
-    mkdirSync(join(cwd, "iblocks"), { recursive: true });
+    mkdirSync(join(cwd, "blocks"), { recursive: true });
 
     // Pages
     ctx.log("Fetching pages…");
@@ -62,7 +62,7 @@ registerCommand({
     }
 
     // iBlocks
-    ctx.log("Fetching iblocks…");
+    ctx.log("Fetching blocks…");
     let blockPage = 1;
     let totalBlocks = 0;
     while (true) {
@@ -81,14 +81,14 @@ registerCommand({
         });
         const content: string = detail.block?.content ?? "";
         const filename = `${b.blockName} - ${b.blockinwebsiteId}.html`;
-        writeFileSync(join(cwd, "iblocks", filename), content, "utf8");
+        writeFileSync(join(cwd, "blocks", filename), content, "utf8");
         totalBlocks++;
-        ctx.log(`  ✓ iblock: ${filename}`);
+        ctx.log(`  ✓ block: ${filename}`);
       }
       if (!res.hasMore) break;
       blockPage++;
     }
 
-    ctx.log(`✓ Done — ${totalPages} pages, ${totalBlocks} iblocks.`);
+    ctx.log(`✓ Done — ${totalPages} pages, ${totalBlocks} blocks.`);
   },
 });

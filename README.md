@@ -1,6 +1,6 @@
 # Interago CLI
 
-CLI de desenvolvimento local para projetos da plataforma [Interago](https://www.interago.com.br). Permite baixar páginas e iBlocks de um projeto, iniciar um servidor local com live reload e gerenciar configurações de acesso — tudo em um terminal interativo.
+CLI de desenvolvimento local para projetos da plataforma [Interago](https://www.interago.com.br). Permite baixar páginas e blocos de um projeto, iniciar um servidor local com live reload e gerenciar configurações de acesso — tudo em um terminal interativo.
 
 ---
 
@@ -58,7 +58,7 @@ Execute `interago` dentro da pasta do projeto que deseja trabalhar. A interface 
 | Comando                           | Descrição                                                                    |
 | --------------------------------- | ---------------------------------------------------------------------------- |
 | `project select [id] [api token]` | Define o projeto ativo. Solicita ID e api token interativamente se omitidos. |
-| `project pull`                    | Baixa todas as páginas e iBlocks do projeto para o diretório atual.          |
+| `project pull`                    | Baixa todas as páginas e blocos do projeto para o diretório atual.           |
 | `server start [porta]`            | Inicia o servidor local de desenvolvimento (padrão: porta 3000).             |
 | `server stop`                     | Para o servidor local.                                                       |
 | `help`                            | Lista todos os comandos disponíveis.                                         |
@@ -83,14 +83,14 @@ interago
 # 3. Dentro do CLI, configurar o projeto
 ❯ project select 701 token
 
-# 4. Baixar páginas e iBlocks
+# 4. Baixar páginas e blocos
 ❯ project pull
 
 # 5. Iniciar o servidor local
 ❯ server start 3000
 ```
 
-Acesse `http://localhost:3000` no navegador. Ao editar qualquer arquivo em `pages/` ou `iblocks/`, o navegador recarrega automaticamente.
+Acesse `http://localhost:3000` no navegador. Ao editar qualquer arquivo em `pages/` ou `blocks/`, o navegador recarrega automaticamente.
 
 ---
 
@@ -102,12 +102,12 @@ meu-projeto/
   pages/
     index - 123.html      ← página raiz (pageUrl vazio → index)
     sobre - 456.html      ← demais páginas pelo slug da URL
-  iblocks/
-    header - 10.html      ← iBlocks reutilizáveis
+  blocks/
+    header - 10.html      ← blocos reutilizáveis
     footer - 11.html
 ```
 
-Os iBlocks são injetados automaticamente nas páginas durante a compilação sob demanda pelo servidor local. Nenhum arquivo compilado é gravado em disco.
+Os blocos são injetados automaticamente nas páginas durante a compilação sob demanda pelo servidor local. Nenhum arquivo compilado é gravado em disco.
 
 ---
 

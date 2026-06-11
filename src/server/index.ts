@@ -57,7 +57,7 @@ function buildPageFileMap(): void {
 
 function buildIblockFileMap(): void {
   iblockFileMap.clear();
-  const iblocksDir = join(cwd, "iblocks");
+  const iblocksDir = join(cwd, "blocks");
   if (!existsSync(iblocksDir)) return;
   for (const f of readdirSync(iblocksDir)) {
     if (!f.endsWith(".html")) continue;
@@ -194,7 +194,7 @@ export function startServer(port: number, dir: string, log: (msg: string) => voi
   });
 
   const pagesDir = join(cwd, "pages");
-  const iblocksDir = join(cwd, "iblocks");
+  const iblocksDir = join(cwd, "blocks");
 
   watcher = chokidar.watch([pagesDir, iblocksDir], {
     ignoreInitial: true,
@@ -203,7 +203,7 @@ export function startServer(port: number, dir: string, log: (msg: string) => voi
 
   watcher.on("change", (filePath: string) => {
     const rel = relative(cwd, filePath).replace(/\\/g, "/");
-    if (rel.startsWith("iblocks/")) {
+    if (rel.startsWith("blocks/")) {
       iblockFileMap.clear();
       pageCache.clear();
       logFn?.(`↻ iblock changed: ${filePath.split(sep).pop()} — reloading all`);
