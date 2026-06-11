@@ -24,7 +24,7 @@ export async function apiCall(
     body: body.toString(),
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const json = await res.json();
+  const json = await res.json() ?? {};
   if (json.status === "error")
     throw new Error(`${json.code}: ${json.message}`);
   notifyStateChange(); // refresh status bar req count
