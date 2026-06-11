@@ -51,7 +51,8 @@ registerCommand({
           pageId: String(p.pageId),
         });
         const code: string = draft.draft?.draftCode ?? draft.draftCode ?? "";
-        const filename = `${p.pageUrl || p.pageName} - ${p.pageId}.html`;
+        const slug = (p.pageUrl as string | undefined)?.replace(/^\//, "").trim() || "index";
+        const filename = `${slug} - ${p.pageId}.html`;
         writeFileSync(join(cwd, "pages", filename), code, "utf8");
         totalPages++;
         ctx.log(`  ✓ page: ${filename}`);
