@@ -11,7 +11,7 @@ type Api = { projectId: string; apiToken: string };
 
 function getApi(ctx: AppContext): Api | null {
   if (!state.projectId || !state.apiToken) {
-    ctx.log("No project set. Run: project select [id] [token]");
+    ctx.log("No project set. Run: project init [id] [token]");
     return null;
   }
   return { projectId: state.projectId, apiToken: state.apiToken };

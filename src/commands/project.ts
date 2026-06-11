@@ -3,8 +3,8 @@ import { saveConfig } from "../core/config.js";
 import { state, notifyStateChange } from "../core/state.js";
 
 registerCommand({
-  name: "project select",
-  description: "Set current project: project select [id] [token]",
+  name: "project init",
+  description: "Set current project: project init [id] [token]",
   async handler(args, ctx) {
     let [projectId, apiToken] = args;
     if (!projectId) projectId = await ctx.prompt("Project ID: ");
