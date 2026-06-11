@@ -21,6 +21,8 @@ CLI de desenvolvimento local para projetos da plataforma [Interago](https://www.
 - [PowerShell 7+](https://github.com/PowerShell/PowerShell/releases) (necessário para o script de instalação)
 - Windows 10/11
 
+> **macOS / Linux:** o código-fonte e todas as dependências são multiplataforma. O script de build e instalação atual é específico para Windows (`--windows-icon`, `install.ps1`). Para compilar em outros sistemas, basta remover a flag `--windows-icon` do `scripts/build.ts` e criar um script de instalação equivalente para o seu sistema.
+
 ---
 
 ## Instalação
