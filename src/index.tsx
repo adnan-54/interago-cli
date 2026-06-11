@@ -4,9 +4,8 @@ import { App } from "./ui/App.js";
 import { state } from "./core/state.js";
 import { loadConfig } from "./core/config.js";
 
-// Register all commands
+// Register all commands (side-effect imports)
 import "./commands/project.js";
-import "./commands/pull.js";
 import "./commands/server.js";
 
 // Restore saved project config

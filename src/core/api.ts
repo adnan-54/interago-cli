@@ -1,4 +1,5 @@
 import { throttle } from "./rateLimiter.js";
+import { notifyStateChange } from "./state.js";
 
 const BASE_URL = "https://www.interago.com.br/App/Api/index.php";
 
@@ -26,5 +27,6 @@ export async function apiCall(
   const json = await res.json();
   if (json.status === "error")
     throw new Error(`${json.code}: ${json.message}`);
+  notifyStateChange(); // refresh status bar req count
   return json;
 }

@@ -1,31 +1,20 @@
 import { registerCommand } from "./registry.js";
 import { state, notifyStateChange } from "../core/state.js";
-import { join } from "path";
-import { existsSync } from "fs";
+import { startServer, stopServer } from "../server/index.js";
 
 registerCommand({
   name: "server start",
   description: "Start dev server: server start [port]",
   async handler(args, ctx) {
-    if (state.serverProcess) {
+    if (state.serverPort !== null) {
       ctx.log(`Server already running on :${state.serverPort}`);
       return;
     }
     const port = parseInt(args[0] ?? "3000", 10);
-    const watchPath = join(process.cwd(), "watch.js");
-    if (!existsSync(watchPath)) {
-      ctx.log("watch.js not found in current directory.");
-      return;
-    }
-    const proc = Bun.spawn(["bun", watchPath], {
-      env: { ...process.env, PORT: String(port) },
-      stdout: "pipe",
-      stderr: "pipe",
-    });
-    state.serverProcess = proc;
+    startServer(port, process.cwd());
     state.serverPort = port;
     notifyStateChange();
-    ctx.log(`✓ Server started on http://localhost:${port}`);
+    ctx.log(`✓ Server started → http://localhost:${port}`);
   },
 });
 
@@ -33,12 +22,11 @@ registerCommand({
   name: "server stop",
   description: "Stop dev server",
   async handler(_args, ctx) {
-    if (!state.serverProcess) {
+    if (state.serverPort === null) {
       ctx.log("Server is not running.");
       return;
     }
-    state.serverProcess.kill();
-    state.serverProcess = null;
+    stopServer();
     state.serverPort = null;
     notifyStateChange();
     ctx.log("✓ Server stopped.");

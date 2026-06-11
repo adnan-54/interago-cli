@@ -1,0 +1,428 @@
+<iBlock name="defaultDeclaration"  bw="18192"/>
+<iExtension name="SEO" extension="3"/>
+<iBlock name="gtmHead"  bw="18196"/>
+<iBlock name="bootstrapGrid"  bw="18190"/>
+<iBlock name="customCSS"  bw="18191"/>
+<iBlock name="navbarCSS"  bw="18198"/>
+
+<!-- Page CSS -->
+<style>
+/* header */
+  header {
+    background: rgba(0, 0, 0, 0.10);
+    border-color: transparent;
+  }
+
+  header.fixed {
+    background: #fff;
+    border-color: #005DA8;
+  }
+
+  header .logo {
+    filter: invert(1) brightness(3) ;
+  }
+
+  header.fixed .logo {
+    filter: invert(0) brightness(1);
+  }
+
+  header .menuButton {
+    color: #fff;
+  }
+    
+  header.fixed .menuButton {
+    color: #393837;
+  }
+
+  header.fixed .menuButton:hover {
+    color: var(--primary)
+  }
+
+  /* banners */
+  #banners {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  #banners .scrollIndicator {
+    --color: #fff;
+
+    position: absolute;
+    bottom: 4.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    color: #fff;
+    font-weight: 400;
+    line-height: 138%;
+    z-index: 10;
+  }
+
+  #banners .scrollIndicator .scroll {
+    width: 1.75rem;
+    height: 4.125rem;
+    border-radius: 1.25rem;
+    border: 1px solid #fff;
+    position: relative;
+  }
+  
+  #banners .scrollIndicator .scroll .thumb {
+    position: absolute;
+    height: 28px;
+    width: calc(100% - 12px);
+    margin-block: 6px;
+    border-radius: inherit;
+    background: var(--color);
+    transform: translateX(-50%);
+    left: 50%;
+    top: 0%;
+    translate: 0% 0%;
+    animation: scroll-thumb 1.5s infinite;
+    transition: background 0.3s ease;
+  }
+
+  @keyframes scroll-thumb {
+    0%, 100% {
+      top: 0%;
+      translate: 0 0;
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      top: 100%;
+      translate: 0 calc(-100% - 12px);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+
+    }
+  }
+
+  #banners .scrollIndicator:hover {
+    --color: var(--accent);
+  }
+
+  #banners .slide {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    height: 100dvh;
+    color: #FFF;
+    line-height: normal;
+  }
+
+  #banners .slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(270deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.80) 100%);;
+  }
+
+  #banners .slide .backgroundImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+  }
+
+  #banners .slide .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 1.25rem;
+    padding-block: 135px;
+  }
+
+  #banners .slide .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    color: var(--accent);
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  #banners .slide .heading {
+    margin-bottom: 0.375rem;
+    line-height: 125%;
+    max-width: 30ch;
+  }
+
+  #banners .slide .stats {
+    display: flex;
+    gap: 1rem;
+    margin-block: 0.375rem;
+  }
+
+  #banners .slide .stats > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    padding-right: 1.875rem;
+  }
+
+  #banners .slide .stats > span + span {
+    border-left: 1px #fff solid;
+    padding-left: 1.875rem;
+  }
+
+  #banners .slide .stats svg {
+    fill: var(--accent);
+  }
+
+  #banners .slide .buttonDefault {
+    padding-block: 1.375rem;
+    padding-inline: 1.875rem;
+    margin-bottom: 2.25rem;
+    width: fit-content;
+  }
+
+  #banners .slide progress {
+    appearance: none; 
+    -webkit-appearance: none;
+
+    width: 100%;
+    max-width: 490px;
+    height: 2px;
+  }
+
+  #banners .slide progress::-webkit-progress-bar {
+    background-color: #fff;
+  }
+
+  #banners .slide progress::-webkit-progress-value {
+    background-color: var(--accent);
+  }
+
+  #banners .navButtons {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 10;
+  }
+
+  #banners .navButtons .container {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  #banners .navButtons .navButton {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: filter 0.3s ease;
+  }
+
+  #banners .navButtons .navButton:hover {
+    filter: brightness(1.1);
+  }
+</style>
+</head>
+
+<body>
+  <iBlock name="gtmBody"  bw="18195"/>
+  <iBlock name="header"  bw="18197"/>
+
+  <main>
+    <section id="banners">
+      <a href="#sobre" class="scrollIndicator" title="Ver mais">
+        <span class="label">Desça a página</span>
+
+        <div class="scroll">
+          <div class="thumb"></div>
+        </div>
+      </a>
+
+      <div class="carousel" data-duration="8000" data-autoplay="true">
+        <div class="slide">
+          <img class="backgroundImage" src="https://cdn.interago.com.br/img/jpg/w_0_h_0_q_8/701/mc/inicial/banners//placeholder" alt="Imagem do empreendimento X"  inert/>
+ 
+          <div class="container">
+            <div class="tags">
+              <span class="tag">Lançamento</span>
+            </div>
+
+            <h2 class="heading">
+              A casa própria que cabe no seu bolso, com financiamento facilitado.
+            </h2>
+
+            <div class="stats">
+              <span class="size">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M2.00918 0.621316C2.13785 0.449705 2.10301 0.206288 1.9314 0.077647C1.75978 -0.0510131 1.51638 -0.0161783 1.38772 0.155433L0.0776077 1.903C-0.0258692 2.04104 -0.0258692 2.23083 0.0776077 2.36889L1.38772 4.11646C1.51638 4.28807 1.75978 4.32288 1.9314 4.19424C2.10301 4.06558 2.13785 3.82219 2.00918 3.65057L1.16484 2.52428H13.1749L12.285 3.64157C12.1514 3.80931 12.179 4.05364 12.3468 4.18727C12.5145 4.3209 12.7589 4.29323 12.8925 4.12547L14.2845 2.3779C14.3973 2.2363 14.3973 2.03557 14.2845 1.89399L12.8925 0.146423C12.7589 -0.0213433 12.5145 -0.0490325 12.3468 0.0845984C12.179 0.218229 12.1514 0.462559 12.285 0.630326L13.1749 1.74759H1.16484L2.00918 0.621316Z" />
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M0 6.11654C0 5.68759 0.347752 5.33984 0.776708 5.33984H13.6895C14.1184 5.33984 14.4662 5.68759 14.4662 6.11654V19.2233C14.4662 19.6522 14.1184 20 13.6895 20H0.776708C0.347752 20 0 19.6522 0 19.2233V6.11654Z" />
+                  <path d="M15.8062 18.0683C15.9348 17.8968 16.1782 17.8619 16.3499 17.9906L17.4761 18.8349V6.82503L16.3589 7.71495C16.1911 7.84859 15.9468 7.82092 15.8131 7.65315C15.6795 7.48538 15.7072 7.24105 15.8749 7.10742L17.6225 5.71544C17.7641 5.60267 17.9649 5.60267 18.1064 5.71544L19.854 7.10742C20.0218 7.24105 20.0496 7.48538 19.9158 7.65315C19.7822 7.82092 19.5379 7.84859 19.3701 7.71495L18.2528 6.82503V18.8349L19.3791 17.9906C19.5507 17.8619 19.7942 17.8968 19.9228 18.0683C20.0515 18.24 20.0166 18.4834 19.8451 18.612L18.0975 19.9221C17.9594 20.0256 17.7695 20.0256 17.6315 19.9221L15.8839 18.612C15.7123 18.4834 15.6775 18.24 15.8062 18.0683Z" />
+                </svg>
+
+                87m2
+              </span>
+
+              <span class="rooms">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M0 15.1384V16.3936C0 16.7172 0.262344 16.9795 0.585938 16.9795C0.909531 16.9795 1.17188 16.7172 1.17188 16.3936V15.7243H18.8281V16.3936C18.8281 16.7172 19.0905 16.9795 19.4141 16.9795C19.7377 16.9795 20 16.7172 20 16.3936V15.1384V13.2139H0V15.1384Z" />
+                  <path d="M17.8451 8.27637H2.15492C0.966719 8.27637 0 9.24309 0 10.4313V12.042H20V10.4313C20 9.24309 19.0333 8.27637 17.8451 8.27637Z" />
+                  <path d="M7.80344 5.68262C7.26133 5.68262 6.82031 6.12359 6.82031 6.66567V7.10445H13.1797V6.66567C13.1797 6.12359 12.7387 5.68262 12.1966 5.68262H7.80344Z" />
+                  <path d="M5.64874 6.66536C5.64874 5.47711 6.61546 4.51043 7.80374 4.51043H12.197C13.3852 4.51043 14.3519 5.47711 14.3519 6.66536V7.10415H17.49V4.15492C17.49 2.96668 16.5232 2 15.335 2H4.66569C3.47745 2 2.51077 2.96668 2.51077 4.15492V7.10415H5.64874V6.66536Z" />
+                </svg>
+
+                2 Quartos
+              </span>
+              
+              <span class="bathrooms">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M18.8281 7.03125H9.45312C8.80711 7.03125 8.28125 7.55711 8.28125 8.20312V9.375H18.8281C19.4741 9.375 20 8.84914 20 8.20312C20 7.55711 19.4741 7.03125 18.8281 7.03125Z" />
+                  <path d="M18.8281 10.5469H7.10938V0H0L1.31867 10.5469H3.59375C3.59375 14.4869 7.0507 15.8851 7.10938 15.9262V18.8281H4.76562V20C4.98438 20 17.903 20 17.6562 20V18.8281H15.3125V15.9262C15.4298 15.8206 18.8281 14.5325 18.8281 10.5469ZM3.59375 2.34375H4.76562V4.6875H3.59375V2.34375Z" />
+                </svg>
+
+                2 Banheiros
+              </span>
+
+              <span class="garage">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M1 17.724V19.001C1 19.2662 1.10536 19.5206 1.29289 19.7081C1.48043 19.8956 1.73478 20.001 2 20.001H3C3.26522 20.001 3.51957 19.8956 3.70711 19.7081C3.89464 19.5206 4 19.2662 4 19.001V18.001H16V19.001C16 19.2662 16.1054 19.5206 16.2929 19.7081C16.4804 19.8956 16.7348 20.001 17 20.001H18C18.2652 20.001 18.5196 19.8956 18.7071 19.7081C18.8946 19.5206 19 19.2662 19 19.001V17.724C19.3034 17.55 19.5556 17.2991 19.7311 16.9966C19.9067 16.6942 19.9994 16.3507 20 16.001V13.001C20 12.17 19.493 11.459 18.772 11.156L17.404 7.05198C17.2056 6.45446 16.8238 5.93468 16.3131 5.56649C15.8024 5.1983 15.1886 5.00042 14.559 5.00098H5.441C4.81139 5.00042 4.19761 5.1983 3.68688 5.56649C3.17615 5.93468 2.79445 6.45446 2.596 7.05198L1.228 11.156C0.8643 11.3083 0.55371 11.5647 0.33523 11.893C0.11676 12.2212 0.00013 12.6067 0 13.001V16.001C0 16.739 0.404 17.377 1 17.724ZM3.5 16.001C3.30295 16.0009 3.10785 15.9621 2.92582 15.8866C2.7438 15.8111 2.57842 15.7005 2.43913 15.5612C2.15783 15.2797 1.99987 14.898 2 14.5C2.00013 14.102 2.15835 13.7204 2.43984 13.4391C2.72133 13.1578 3.10304 12.9999 3.501 13C3.89896 13.0001 4.28056 13.1583 4.56187 13.4398C4.84317 13.7213 5.00113 14.103 5.001 14.501C5.00087 14.899 4.84265 15.2806 4.56116 15.5619C4.27967 15.8432 3.89796 16.0011 3.5 16.001ZM16.5 16.001C16.102 16.0009 15.7204 15.8427 15.4391 15.5612C15.1578 15.2797 14.9999 14.898 15 14.5C15.0001 14.102 15.1583 13.7204 15.4398 13.4391C15.7213 13.1578 16.103 12.9999 16.501 13C16.899 13.0001 17.2806 13.1583 17.5619 13.4398C17.8432 13.7213 18.0011 14.103 18.001 14.501C18.0009 14.899 17.8427 15.2806 17.5612 15.5619C17.2797 15.8432 16.898 16.0011 16.5 16.001ZM5.441 7.00098H14.558C14.768 7.00093 14.9726 7.06697 15.143 7.18974C15.3133 7.31251 15.4407 7.48578 15.507 7.68498L16.613 11.001H3.387L4.492 7.68498C4.629 7.27598 5.011 7.00098 5.441 7.00098Z" />
+                  <path d="M20 5.38851V3.27951L10.316 0.0515093C10.102 -0.0201307 9.87 -0.0169606 9.658 0.0605094L0 3.57251V5.70051L10.015 2.05851L20 5.38851Z" />
+                </svg>
+
+                2 Garagem
+              </span>
+            </div>
+
+            <a class="buttonDefault" href="#" title="Ver mais sobre o empreendimento X">
+              Quero minha casa própria! 
+            </a>
+
+            <progress value="50" max="100"></progress>
+          </div>
+        </div>
+
+        <div class="slide">
+          <img class="backgroundImage" src="https://cdn.interago.com.br/img/jpg/w_0_h_0_q_8/701/mc/inicial/banners//placeholder" alt="Imagem do empreendimento X"  inert/>
+ 
+          <div class="container">
+            <div class="tags">
+              <span class="tag">Lançamento</span>
+            </div>
+
+            <h2 class="heading">
+              A casa própria que cabe no seu bolso, com financiamento facilitado.
+            </h2>
+
+            <div class="stats">
+              <span class="size">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M2.00918 0.621316C2.13785 0.449705 2.10301 0.206288 1.9314 0.077647C1.75978 -0.0510131 1.51638 -0.0161783 1.38772 0.155433L0.0776077 1.903C-0.0258692 2.04104 -0.0258692 2.23083 0.0776077 2.36889L1.38772 4.11646C1.51638 4.28807 1.75978 4.32288 1.9314 4.19424C2.10301 4.06558 2.13785 3.82219 2.00918 3.65057L1.16484 2.52428H13.1749L12.285 3.64157C12.1514 3.80931 12.179 4.05364 12.3468 4.18727C12.5145 4.3209 12.7589 4.29323 12.8925 4.12547L14.2845 2.3779C14.3973 2.2363 14.3973 2.03557 14.2845 1.89399L12.8925 0.146423C12.7589 -0.0213433 12.5145 -0.0490325 12.3468 0.0845984C12.179 0.218229 12.1514 0.462559 12.285 0.630326L13.1749 1.74759H1.16484L2.00918 0.621316Z" />
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M0 6.11654C0 5.68759 0.347752 5.33984 0.776708 5.33984H13.6895C14.1184 5.33984 14.4662 5.68759 14.4662 6.11654V19.2233C14.4662 19.6522 14.1184 20 13.6895 20H0.776708C0.347752 20 0 19.6522 0 19.2233V6.11654Z" />
+                  <path d="M15.8062 18.0683C15.9348 17.8968 16.1782 17.8619 16.3499 17.9906L17.4761 18.8349V6.82503L16.3589 7.71495C16.1911 7.84859 15.9468 7.82092 15.8131 7.65315C15.6795 7.48538 15.7072 7.24105 15.8749 7.10742L17.6225 5.71544C17.7641 5.60267 17.9649 5.60267 18.1064 5.71544L19.854 7.10742C20.0218 7.24105 20.0496 7.48538 19.9158 7.65315C19.7822 7.82092 19.5379 7.84859 19.3701 7.71495L18.2528 6.82503V18.8349L19.3791 17.9906C19.5507 17.8619 19.7942 17.8968 19.9228 18.0683C20.0515 18.24 20.0166 18.4834 19.8451 18.612L18.0975 19.9221C17.9594 20.0256 17.7695 20.0256 17.6315 19.9221L15.8839 18.612C15.7123 18.4834 15.6775 18.24 15.8062 18.0683Z" />
+                </svg>
+
+                87m2
+              </span>
+
+              <span class="rooms">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M0 15.1384V16.3936C0 16.7172 0.262344 16.9795 0.585938 16.9795C0.909531 16.9795 1.17188 16.7172 1.17188 16.3936V15.7243H18.8281V16.3936C18.8281 16.7172 19.0905 16.9795 19.4141 16.9795C19.7377 16.9795 20 16.7172 20 16.3936V15.1384V13.2139H0V15.1384Z" />
+                  <path d="M17.8451 8.27637H2.15492C0.966719 8.27637 0 9.24309 0 10.4313V12.042H20V10.4313C20 9.24309 19.0333 8.27637 17.8451 8.27637Z" />
+                  <path d="M7.80344 5.68262C7.26133 5.68262 6.82031 6.12359 6.82031 6.66567V7.10445H13.1797V6.66567C13.1797 6.12359 12.7387 5.68262 12.1966 5.68262H7.80344Z" />
+                  <path d="M5.64874 6.66536C5.64874 5.47711 6.61546 4.51043 7.80374 4.51043H12.197C13.3852 4.51043 14.3519 5.47711 14.3519 6.66536V7.10415H17.49V4.15492C17.49 2.96668 16.5232 2 15.335 2H4.66569C3.47745 2 2.51077 2.96668 2.51077 4.15492V7.10415H5.64874V6.66536Z" />
+                </svg>
+
+                2 Quartos
+              </span>
+              
+              <span class="bathrooms">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M18.8281 7.03125H9.45312C8.80711 7.03125 8.28125 7.55711 8.28125 8.20312V9.375H18.8281C19.4741 9.375 20 8.84914 20 8.20312C20 7.55711 19.4741 7.03125 18.8281 7.03125Z" />
+                  <path d="M18.8281 10.5469H7.10938V0H0L1.31867 10.5469H3.59375C3.59375 14.4869 7.0507 15.8851 7.10938 15.9262V18.8281H4.76562V20C4.98438 20 17.903 20 17.6562 20V18.8281H15.3125V15.9262C15.4298 15.8206 18.8281 14.5325 18.8281 10.5469ZM3.59375 2.34375H4.76562V4.6875H3.59375V2.34375Z" />
+                </svg>
+
+                2 Banheiros
+              </span>
+
+              <span class="garage">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M1 17.724V19.001C1 19.2662 1.10536 19.5206 1.29289 19.7081C1.48043 19.8956 1.73478 20.001 2 20.001H3C3.26522 20.001 3.51957 19.8956 3.70711 19.7081C3.89464 19.5206 4 19.2662 4 19.001V18.001H16V19.001C16 19.2662 16.1054 19.5206 16.2929 19.7081C16.4804 19.8956 16.7348 20.001 17 20.001H18C18.2652 20.001 18.5196 19.8956 18.7071 19.7081C18.8946 19.5206 19 19.2662 19 19.001V17.724C19.3034 17.55 19.5556 17.2991 19.7311 16.9966C19.9067 16.6942 19.9994 16.3507 20 16.001V13.001C20 12.17 19.493 11.459 18.772 11.156L17.404 7.05198C17.2056 6.45446 16.8238 5.93468 16.3131 5.56649C15.8024 5.1983 15.1886 5.00042 14.559 5.00098H5.441C4.81139 5.00042 4.19761 5.1983 3.68688 5.56649C3.17615 5.93468 2.79445 6.45446 2.596 7.05198L1.228 11.156C0.8643 11.3083 0.55371 11.5647 0.33523 11.893C0.11676 12.2212 0.00013 12.6067 0 13.001V16.001C0 16.739 0.404 17.377 1 17.724ZM3.5 16.001C3.30295 16.0009 3.10785 15.9621 2.92582 15.8866C2.7438 15.8111 2.57842 15.7005 2.43913 15.5612C2.15783 15.2797 1.99987 14.898 2 14.5C2.00013 14.102 2.15835 13.7204 2.43984 13.4391C2.72133 13.1578 3.10304 12.9999 3.501 13C3.89896 13.0001 4.28056 13.1583 4.56187 13.4398C4.84317 13.7213 5.00113 14.103 5.001 14.501C5.00087 14.899 4.84265 15.2806 4.56116 15.5619C4.27967 15.8432 3.89796 16.0011 3.5 16.001ZM16.5 16.001C16.102 16.0009 15.7204 15.8427 15.4391 15.5612C15.1578 15.2797 14.9999 14.898 15 14.5C15.0001 14.102 15.1583 13.7204 15.4398 13.4391C15.7213 13.1578 16.103 12.9999 16.501 13C16.899 13.0001 17.2806 13.1583 17.5619 13.4398C17.8432 13.7213 18.0011 14.103 18.001 14.501C18.0009 14.899 17.8427 15.2806 17.5612 15.5619C17.2797 15.8432 16.898 16.0011 16.5 16.001ZM5.441 7.00098H14.558C14.768 7.00093 14.9726 7.06697 15.143 7.18974C15.3133 7.31251 15.4407 7.48578 15.507 7.68498L16.613 11.001H3.387L4.492 7.68498C4.629 7.27598 5.011 7.00098 5.441 7.00098Z" />
+                  <path d="M20 5.38851V3.27951L10.316 0.0515093C10.102 -0.0201307 9.87 -0.0169606 9.658 0.0605094L0 3.57251V5.70051L10.015 2.05851L20 5.38851Z" />
+                </svg>
+
+                2 Garagem
+              </span>
+            </div>
+
+            <a class="buttonDefault" href="#" title="Ver mais sobre o empreendimento X">
+              Quero minha casa própria! 
+            </a>
+
+            <progress value="50" max="100"></progress>
+          </div>
+        </div>
+      </div>
+
+      <div class="navButtons">
+        <div class="container">
+          <button class="navButton previous" title="Anterior" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="23" viewBox="0 0 14 23" fill="none">
+              <path d="M12.1213 1.06067L2.12134 11.0607L12.1213 21.0607" stroke="currentColor" stroke-width="3"/>
+            </svg>
+          </button>
+
+          <button class="navButton next" title="Próximo" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="23" viewBox="0 0 14 23" fill="none">
+              <path d="M1.06067 1.06067L11.0607 11.0607L1.06067 21.0607" stroke="currentColor" stroke-width="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <iBlock name="footer"  bw="18193"/>
+  <iBlock name="globalScripts"  bw="18194"/>
+
+  <!-- Page Scripts -->
+  <script>
+  function alignNavButtons() {
+    const progress = document.querySelector('#banners .slide[data-state="visible"] progress');
+    const navButtons = document.querySelector('#banners .navButtons');
+    if (!progress || !navButtons) return;
+
+    const banners = document.querySelector('#banners');
+    const bannersBottom = banners.getBoundingClientRect().bottom;
+    const progressCenter = progress.getBoundingClientRect().top + progress.offsetHeight / 2;
+    const distFromBottom = bannersBottom - progressCenter;
+
+    navButtons.style.bottom = distFromBottom + 'px';
+    navButtons.style.transform = 'translateY(50%)';
+    navButtons.style.opacity = '1';
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const carouselEl = document.querySelector('#banners .carousel');
+    const api = carouselEl && carouselEl._carousel;
+
+    document.querySelector('#banners .navButton.previous')
+      ?.addEventListener('click', function () { api && api.previous(); });
+    document.querySelector('#banners .navButton.next')
+      ?.addEventListener('click', function () { api && api.next(); });
+
+    alignNavButtons();
+  });
+
+  window.addEventListener('resize', alignNavButtons);
+  </script>
+</body>
+</html>
