@@ -45,6 +45,29 @@ function findHtmlFiles(dir) {
 
 // --- Compiler ---
 
+// Cache the iblocks dir listing so repeated lookups don't re-read disk on every compile.
+let iblockCache = null;
+function getIblockFile(name) {
+  if (!iblockCache) refreshIblockCache();
+  // Prefer exact match, then fall back to "{name} - {id}.html" convention.
+  return (
+    iblockCache.get(name) ??
+    iblockCache.get(name.toLowerCase()) ??
+    null
+  );
+}
+function refreshIblockCache() {
+  iblockCache = new Map();
+  if (!fs.existsSync(IBLOCKS_DIR)) return;
+  for (const f of fs.readdirSync(IBLOCKS_DIR)) {
+    if (!f.endsWith(".html")) continue;
+    // Strip " - {id}" suffix if present, use remainder as key.
+    const key = f.replace(/\s*-\s*\d+\.html$/, "").replace(/\.html$/, "");
+    iblockCache.set(key, path.join(IBLOCKS_DIR, f));
+    iblockCache.set(key.toLowerCase(), path.join(IBLOCKS_DIR, f));
+  }
+}
+
 function compilePage(pageFile) {
   const rel = path.relative(PAGES_DIR, pageFile); // e.g. "index.html" or "teste/index.html"
   const outFile = path.join(OUTPUT_DIR, rel);
@@ -52,8 +75,8 @@ function compilePage(pageFile) {
   let content = fs.readFileSync(pageFile, "utf8");
 
   content = content.replace(/<iBlock[^>]*name="([^"]+)"[^>]*\/>/g, (_, name) => {
-    const blockFile = path.join(IBLOCKS_DIR, `${name}.html`);
-    if (fs.existsSync(blockFile)) return fs.readFileSync(blockFile, "utf8");
+    const blockFile = getIblockFile(name);
+    if (blockFile) return fs.readFileSync(blockFile, "utf8");
     console.warn(`  ⚠ iBlock not found: ${name}`);
     return `<!-- [iBlock: ${name}] not found -->`;
   });
@@ -135,6 +158,7 @@ const server = http.createServer((req, res) => {
 
 function onIblockChange(filePath) {
   console.log(`↻ iblock: ${path.basename(filePath)} → recompiling all`);
+  iblockCache = null; // invalidate so renamed/new files are picked up
   compileAll();
   notifyClients();
 }
