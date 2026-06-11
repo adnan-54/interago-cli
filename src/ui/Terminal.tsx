@@ -16,8 +16,8 @@ export function Terminal({ lines, onSubmit, promptQuestion, statusBar }: Props) 
   const savedInput = useRef("");
   const { stdout } = useStdout();
 
-  // Reserve rows: status bar (3) + input (1) + padding (1)
-  const visibleLines = Math.max(1, (stdout?.rows ?? 24) - 5);
+  // Reserve rows: 2 separator lines + 1 status row + 1 input row
+  const visibleLines = Math.max(1, (stdout?.rows ?? 24) - 4);
 
   useInput((_char, key) => {
     if (promptQuestion !== null) return;
@@ -55,14 +55,14 @@ export function Terminal({ lines, onSubmit, promptQuestion, statusBar }: Props) 
 
   return (
     <Box flexDirection="column" flexGrow={1}>
-      {/* Output — clipped to available height, always shows tail */}
+      {/* Output — always shows tail, clipped to available height */}
       <Box flexDirection="column" flexGrow={1} overflow="hidden" paddingX={1}>
         {lines.slice(-visibleLines).map((line, i) => (
           <Text key={i}>{line}</Text>
         ))}
       </Box>
 
-      {/* Status bar sticky above input */}
+      {/* Status bar — sticky above input */}
       {statusBar}
 
       {/* Input */}
