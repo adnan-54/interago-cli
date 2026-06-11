@@ -5,7 +5,7 @@
   "scripts": {
     "start": "bun src/index.tsx",
     "dev": "bun --hot src/index.tsx",
-    "build": "bun build --compile ./src/index.tsx --outfile interago --embed=node_modules/yoga-wasm-web/dist/yoga.wasm"
+    "build": "bun scripts/build.ts"
   },
   "dependencies": {
     "chokidar": "^5.0.0",

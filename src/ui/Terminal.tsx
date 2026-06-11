@@ -64,10 +64,15 @@ export function Terminal({
   // Pad with empty rows at the top so every row is always rendered,
   // which forces ink to overwrite (clear) old terminal content.
   const tail = lines.slice(-visibleLines);
-  const padded = [...new Array(Math.max(0, visibleLines - tail.length)).fill(""), ...tail];
+  const padded = [
+    ...new Array(Math.max(0, visibleLines - tail.length)).fill(""),
+    ...tail,
+  ];
 
   return (
     <Box flexDirection="column" flexGrow={1}>
+      <Box height={100}></Box>
+
       {/* Output — fixed row count so the full area is always cleared */}
       <Box flexDirection="column" flexGrow={1} paddingX={1}>
         {padded.map((line, i) => (
@@ -82,7 +87,8 @@ export function Terminal({
         paddingX={1}
         borderStyle="single"
         borderLeft={false}
-        borderRight={false}>
+        borderRight={false}
+        borderColor="blueBright">
         <Text color="cyan">{promptQuestion ?? "❯ "}</Text>
         <TextInput value={input} onChange={setInput} onSubmit={handleSubmit} />
       </Box>

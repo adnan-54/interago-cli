@@ -6,6 +6,10 @@ registerCommand({
   name: "server start",
   description: "Start dev server: server start [port]",
   async handler(args, ctx) {
+    if (!state.projectId) {
+      ctx.log("No project set. Run: project select [id] [token]");
+      return;
+    }
     if (state.serverPort !== null) {
       ctx.log(`Server already running on :${state.serverPort}`);
       return;
