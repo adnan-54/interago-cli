@@ -9,7 +9,12 @@ interface Props {
   statusBar: ReactNode;
 }
 
-export function Terminal({ lines, onSubmit, promptQuestion, statusBar }: Props) {
+export function Terminal({
+  lines,
+  onSubmit,
+  promptQuestion,
+  statusBar,
+}: Props) {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -25,7 +30,10 @@ export function Terminal({ lines, onSubmit, promptQuestion, statusBar }: Props) 
     if (key.upArrow) {
       if (history.length === 0) return;
       if (historyIndex === -1) savedInput.current = input;
-      const next = historyIndex === -1 ? history.length - 1 : Math.max(0, historyIndex - 1);
+      const next =
+        historyIndex === -1
+          ? history.length - 1
+          : Math.max(0, historyIndex - 1);
       setHistoryIndex(next);
       setInput(history[next]);
     }
@@ -45,7 +53,7 @@ export function Terminal({ lines, onSubmit, promptQuestion, statusBar }: Props) 
 
   const handleSubmit = (value: string) => {
     if (!promptQuestion && value.trim()) {
-      setHistory(prev => [...prev, value]);
+      setHistory((prev) => [...prev, value]);
     }
     setHistoryIndex(-1);
     savedInput.current = "";
@@ -53,23 +61,34 @@ export function Terminal({ lines, onSubmit, promptQuestion, statusBar }: Props) 
     onSubmit(value);
   };
 
+  // Pad with empty rows at the top so every row is always rendered,
+  // which forces ink to overwrite (clear) old terminal content.
+  const tail = lines.slice(-visibleLines);
+  const padded = [...new Array(Math.max(0, visibleLines - tail.length)).fill(""), ...tail];
+
   return (
     <Box flexDirection="column" flexGrow={1}>
-      {/* Output — always shows tail, clipped to available height */}
-      <Box flexDirection="column" flexGrow={1} overflow="hidden" paddingX={1}>
-        {lines.slice(-visibleLines).map((line, i) => (
-          <Text key={i}>{line}</Text>
+      {/* Output — fixed row count so the full area is always cleared */}
+      <Box flexDirection="column" flexGrow={1} paddingX={1}>
+        {padded.map((line, i) => (
+          <Box key={i}>
+            <Text wrap="truncate">{line}</Text>
+          </Box>
         ))}
       </Box>
 
-      {/* Status bar — sticky above input */}
-      {statusBar}
-
       {/* Input */}
-      <Box paddingX={1}>
-        <Text color="cyan">{promptQuestion ?? "> "}</Text>
+      <Box
+        paddingX={1}
+        borderStyle="single"
+        borderLeft={false}
+        borderRight={false}>
+        <Text color="cyan">{promptQuestion ?? "❯ "}</Text>
         <TextInput value={input} onChange={setInput} onSubmit={handleSubmit} />
       </Box>
+
+      {/* Status bar — sticky under input */}
+      {statusBar}
     </Box>
   );
 }
