@@ -5,7 +5,7 @@
 **Smoke test sequence (real terminal):**
 ```
 bun start
-> project 701 REDACTED
+> project <project-id> <api-key>
 > pull
 > server start
 > server stop
