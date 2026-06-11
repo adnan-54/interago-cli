@@ -14,7 +14,6 @@ export function App() {
   const [promptQuestion, setPromptQuestion] = useState<string | null>(null);
   const resolveRef = useRef<((s: string) => void) | null>(null);
 
-  // Wire state change → re-render
   state.onStateChange = useCallback(() => forceUpdate(n => n + 1), []);
 
   const log = useCallback((msg: string) => {
@@ -30,7 +29,6 @@ export function App() {
 
   const handleSubmit = useCallback(
     async (input: string) => {
-      // Resolve an active prompt
       if (resolveRef.current) {
         const resolve = resolveRef.current;
         resolveRef.current = null;
@@ -65,13 +63,17 @@ export function App() {
     [log, prompt, exit]
   );
 
+  const statusBar = (
+    <StatusBar projectId={state.projectId} serverPort={state.serverPort} />
+  );
+
   return (
     <Box flexDirection="column" height="100%">
-      <StatusBar projectId={state.projectId} serverPort={state.serverPort} />
       <Terminal
         lines={lines}
         onSubmit={handleSubmit}
         promptQuestion={promptQuestion}
+        statusBar={statusBar}
       />
     </Box>
   );

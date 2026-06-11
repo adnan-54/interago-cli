@@ -1,18 +1,23 @@
-import React, { useState, useRef } from "react";
-import { Box, Text, useInput } from "ink";
+import React, { useState, useRef, type ReactNode } from "react";
+import { Box, Text, useInput, useStdout } from "ink";
 import TextInput from "ink-text-input";
 
 interface Props {
   lines: string[];
   onSubmit: (input: string) => void;
   promptQuestion: string | null;
+  statusBar: ReactNode;
 }
 
-export function Terminal({ lines, onSubmit, promptQuestion }: Props) {
+export function Terminal({ lines, onSubmit, promptQuestion, statusBar }: Props) {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
-  const savedInput = useRef(""); // preserves current input when navigating up
+  const savedInput = useRef("");
+  const { stdout } = useStdout();
+
+  // Reserve rows: status bar (3) + input (1) + padding (1)
+  const visibleLines = Math.max(1, (stdout?.rows ?? 24) - 5);
 
   useInput((_char, key) => {
     if (promptQuestion !== null) return;
@@ -49,13 +54,19 @@ export function Terminal({ lines, onSubmit, promptQuestion }: Props) {
   };
 
   return (
-    <Box flexDirection="column" flexGrow={1} paddingX={1}>
-      <Box flexDirection="column" flexGrow={1}>
-        {lines.map((line, i) => (
+    <Box flexDirection="column" flexGrow={1}>
+      {/* Output — clipped to available height, always shows tail */}
+      <Box flexDirection="column" flexGrow={1} overflow="hidden" paddingX={1}>
+        {lines.slice(-visibleLines).map((line, i) => (
           <Text key={i}>{line}</Text>
         ))}
       </Box>
-      <Box marginTop={1}>
+
+      {/* Status bar sticky above input */}
+      {statusBar}
+
+      {/* Input */}
+      <Box paddingX={1}>
         <Text color="cyan">{promptQuestion ?? "> "}</Text>
         <TextInput value={input} onChange={setInput} onSubmit={handleSubmit} />
       </Box>
