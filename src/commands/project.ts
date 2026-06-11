@@ -3,7 +3,7 @@ import { saveConfig } from "../core/config.js";
 import { state, notifyStateChange } from "../core/state.js";
 import { apiCall } from "../core/api.js";
 import { mkdirSync, writeFileSync } from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
 
 registerCommand({
   name: "project select",
@@ -33,10 +33,10 @@ registerCommand({
     mkdirSync(join(cwd, "pages"), { recursive: true });
     mkdirSync(join(cwd, "blocks"), { recursive: true });
 
-    // Pages
+    // Pages — two-pass: collect all, then detect prefix conflicts, then write
     ctx.log("Fetching pages…");
     let page = 1;
-    let totalPages = 0;
+    const collected: Array<{ slug: string; pageId: string; code: string }> = [];
     while (true) {
       const res = await apiCall(api, {
         module: "pages",
@@ -52,13 +52,28 @@ registerCommand({
         });
         const code: string = draft.draft?.draftCode ?? draft.draftCode ?? "";
         const slug = (p.pageUrl as string | undefined)?.replace(/^\//, "").trim() || "index";
-        const filename = `${slug} - ${p.pageId}.html`;
-        writeFileSync(join(cwd, "pages", filename), code, "utf8");
-        totalPages++;
-        ctx.log(`  ✓ page: ${filename}`);
+        collected.push({ slug, pageId: String(p.pageId), code });
       }
       if (!res.hasMore) break;
       page++;
+    }
+
+    // Promote any slug that is a prefix of another slug to slug/index
+    const slugSet = new Set(collected.map((p) => p.slug));
+    for (const p of collected) {
+      if ([...slugSet].some((s) => s.startsWith(p.slug + "/"))) {
+        p.slug = p.slug + "/index";
+      }
+    }
+
+    let totalPages = 0;
+    for (const p of collected) {
+      const filename = `${p.slug} - ${p.pageId}.html`;
+      const filePath = join(cwd, "pages", filename);
+      mkdirSync(dirname(filePath), { recursive: true });
+      writeFileSync(filePath, p.code, "utf8");
+      totalPages++;
+      ctx.log(`  ✓ page: ${filename}`);
     }
 
     // iBlocks

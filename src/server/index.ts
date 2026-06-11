@@ -78,7 +78,7 @@ function compileOnDemand(urlPath: string): string | null {
   if (pageCache.has(key)) return pageCache.get(key)!;
   if (!pageFileMap.size) buildPageFileMap();
 
-  const filePath = pageFileMap.get(key);
+  const filePath = pageFileMap.get(key) ?? pageFileMap.get(key + "/index");
   if (!filePath || !existsSync(filePath)) return null;
 
   if (!iblockFileMap.size) buildIblockFileMap();
